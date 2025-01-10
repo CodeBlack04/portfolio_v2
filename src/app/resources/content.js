@@ -3,8 +3,9 @@ import { InlineCode } from "@/once-ui/components";
 const person = {
     firstName: 'Tauhidur',
     lastName:  'Rahman',
+    nickName: 'Tamim',
     get name() {
-        return `${this.firstName} ${this.lastName}`;
+        return `${this.firstName} ${this.lastName} ${this.nickName}`;
     },
     role:      'Software and Backend Developer',
     avatar:    '/images/avatar.jpg',
