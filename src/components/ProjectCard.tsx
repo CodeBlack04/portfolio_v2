@@ -101,7 +101,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
             )}
             <Flex
                 mobileDirection="column"
-                fillWidth paddingX="s" paddingTop="12" paddingBottom="24" gap="l">
+                fillWidth paddingX="s" paddingTop="12" paddingBottom="24" gap="1">
                 {title && (
                     <Flex
                         flex={5}>
