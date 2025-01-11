@@ -1,0 +1,54 @@
+---
+title: "PostgreSQL Install Notes"
+publishedAt: "2022-04-18"
+summary: "Steps to install PostgreSQL, create a database, user, configure roles, grant privileges, and exit."
+tag: "Journal"
+---
+
+# PostgreSQL Setup Notes
+
+## Installation and Initial Setup
+
+1. **Install Required Packages**:
+   ```bash
+   sudo apt install python3-pip libpq-dev postgresql postgresql-contrib
+   ```
+
+2. **Access PostgreSQL Shell as `postgres` User**:
+   ```bash
+   sudo -u postgres psql
+   ```
+
+3. **Create a New Database**:
+   ```sql
+   CREATE DATABASE <databasename>;
+   ```
+
+4. **Create a New User**:
+   ```sql
+   CREATE USER <username> WITH PASSWORD '<password>';
+   ```
+
+5. **Set Role Configuration for the User**:
+   - **Set Client Encoding**:
+     ```sql
+     ALTER ROLE <username> SET client_encoding TO 'utf8';
+     ```
+   - **Set Default Transaction Isolation**:
+     ```sql
+     ALTER ROLE <username> SET default_transaction_isolation TO 'read committed';
+     ```
+   - **Set Timezone**:
+     ```sql
+     ALTER ROLE <username> SET timezone TO 'UTC';
+     ```
+
+6. **Grant Privileges**:
+   ```sql
+   GRANT ALL PRIVILEGES ON DATABASE <databasename> TO <username>;
+   ```
+
+7. **Exit PostgreSQL Shell**:
+   ```bash
+   \q
+   ```

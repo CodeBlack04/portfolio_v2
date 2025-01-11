@@ -1,0 +1,115 @@
+---
+title: "SQL Queries"
+publishedAt: "2022-02-12"
+summary: "Comprehensive guide on SQL queries, covering database operations, table management, relationships, joins, and password changes."
+tag: "Journal"
+---
+
+# SQL Queries Notes
+
+## Common Commands
+
+### Database Operations:
+- **List Databases**: `\l`
+- **Connect to a Database**: `\c <database_name>`
+- **Quit Database**: `\q`
+- **Display Tables**: `\d`
+
+### Database and Table Creation:
+- **Create Database**:
+  ```sql
+  CREATE DATABASE <database_name>;
+  ```
+- **Create Table**:
+  ```sql
+  CREATE TABLE <table_name> (
+      column_name1 datatype,
+      column_name2 datatype,
+      ...
+  );
+  ```
+
+### Table Alteration:
+- **Add Column**:
+  ```sql
+  ALTER TABLE <table_name> ADD COLUMN <column_name> <datatype>;
+  ```
+- **Drop Column**:
+  ```sql
+  ALTER TABLE <table_name> DROP COLUMN <column_name>;
+  ```
+- **Add Primary Key**:
+  ```sql
+  ALTER TABLE <table_name> ADD PRIMARY KEY (<column_name>);
+  ```
+- **Add Foreign Key**:
+  ```sql
+  ALTER TABLE <table_name> ADD COLUMN <column_name> <datatype> REFERENCES <referenced_table>(<referenced_column>);
+  ```
+- **Add Unique Constraint**:
+  ```sql
+  ALTER TABLE <table_name> ADD UNIQUE (<column_name>);
+  ```
+- **Set Column to NOT NULL**:
+  ```sql
+  ALTER TABLE <table_name> ALTER COLUMN <column_name> SET NOT NULL;
+  ```
+- **Drop Constraints**:
+  ```sql
+  ALTER TABLE <table_name> DROP CONSTRAINT <constraint_name>;
+  ```
+
+### Data Manipulation:
+- **Insert Data**:
+  ```sql
+  INSERT INTO <table_name> (<column_names>) VALUES (<values>);
+  ```
+- **Delete Data**:
+  ```sql
+  DELETE FROM <table_name> WHERE <condition>;
+  ```
+- **Update Data**:
+  ```sql
+  UPDATE <table_name> SET <column_name> = <value> WHERE <condition>;
+  ```
+
+## Foreign Keys and Relationships
+
+### Key Types:
+- **Foreign Key**:
+  - One-to-Many
+  - One-to-One (Use `UNIQUE` constraint)
+
+### Junction Table for Many-to-Many Relationships:
+1. **Foreign Key 1**: References primary key of Table 1
+2. **Foreign Key 2**: References primary key of Table 2
+3. **Primary Key**: Combination of Foreign Key 1 and Foreign Key 2
+
+## Join Operations
+
+### One-to-One or One-to-Many:
+```sql
+SELECT <columns>
+FROM <table1>
+FULL JOIN <table2> ON <table1.primary_key> = <table2.foreign_key>;
+```
+
+### Many-to-Many:
+Using a Junction Table:
+```sql
+SELECT <columns>
+FROM <table1>
+FULL JOIN <junction_table> ON <table1.primary_key> = <junction_table.foreign_key1>
+FULL JOIN <table2> ON <junction_table.foreign_key2> = <table2.primary_key>;
+```
+
+## Change Password
+- **Switch User and Database**:
+  ```sql
+  \c <database_name> <username>
+  ```
+- **Change Password**:
+  ```sql
+  \password <username>
+  ```
+

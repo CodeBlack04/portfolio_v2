@@ -1,0 +1,206 @@
+---
+title: "Django Deployment on DigitalOcean"
+publishedAt: "2023-08-23"
+summary: "Deploy Django on DigitalOcean using Gunicorn, Supervisor, and Nginx for efficient application hosting."
+tag: "Journal"
+---
+
+# Django Deployment on DigitalOcean
+
+## Steps for Deployment
+
+### 1. System Update and Installation
+1. Update and upgrade the system:
+   ```bash
+   sudo apt update && sudo apt upgrade
+   ```
+2. Install required packages:
+   ```bash
+   sudo apt install python3 python3-pip python3-dev python3.10-venv nginx supervisor
+   ```
+3. Upgrade `pip`:
+   ```bash
+   pip install --upgrade pip
+   ```
+
+### 2. Create a Dedicated User and Directory
+4. Create a system group:
+   ```bash
+   sudo groupadd --system webapps
+   ```
+5. Create a system user:
+   ```bash
+   sudo useradd --system --gid webapps --shell /bin/bash --home /webapps/<appname> <appname>
+   ```
+6. Create the application directory:
+   ```bash
+   mkdir -p /webapps/<appname>
+   ```
+7. Change to the application directory:
+   ```bash
+   cd /webapps/<appname>
+   ```
+
+### 3. Virtual Environment Setup
+8. Create a virtual environment:
+   ```bash
+   python3 -m venv env
+   ```
+9. Activate the virtual environment:
+   ```bash
+   source env/bin/activate
+   ```
+10. Clone the project repository and install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    pip install python-dotenv gunicorn 'uvicorn[standard]'
+    ```
+11. Prepare `settings.py` and update `asgi.py`:
+    - Add:
+      ```python
+      import django
+      django.setup()
+      ```
+
+12. Install `psycopg2-binary` if using PostgreSQL:
+    ```bash
+    pip install psycopg2-binary
+    ```
+
+### 4. Configure Gunicorn
+13. Create a `gunicorn_start` script in `env/bin`:
+    ```bash
+    #!/bin/bash
+
+    NAME='<appname>'
+    DJANGODIR=/webapps/<appname>/<appname>
+    SOCKFILE=/webapps/<appname>/run/gunicorn.sock
+    USER=<appname>
+    GROUP=webapps
+    NUM_WORKERS=3
+    DJANGO_SETTINGS_MODULE=<appname>.settings
+    DJANGO_ASGI_MODULE=<appname>.asgi
+    TIMEOUT=120
+
+    cd $DJANGODIR
+    source /webapps/<appname>/env/bin/activate
+    export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+    export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+    RUNDIR=$(dirname $SOCKFILE)
+    test -d $RUNDIR || mkdir -p $RUNDIR
+
+    exec /webapps/<appname>/env/bin/gunicorn ${DJANGO_ASGI_MODULE}:application \
+    --name $NAME \
+    --workers $NUM_WORKERS \
+    --timeout $TIMEOUT \
+    --user=$USER \
+    --group=$GROUP \
+    --bind=unix:$SOCKFILE \
+    --log-level=debug \
+    --log-file=- \
+    -k uvicorn.workers.UvicornWorker
+    ```
+14. Make the script executable:
+    ```bash
+    chmod +x ./env/bin/gunicorn_start
+    ```
+15. Set ownership for the application directory:
+    ```bash
+    chown -R <appname>:webapps .
+    ```
+16. Test Gunicorn:
+    ```bash
+    ./env/bin/gunicorn_start
+    ```
+
+### 5. Configure Supervisor
+17. Create a Supervisor configuration file in `/etc/supervisor/conf.d`:
+    ```bash
+    vi /etc/supervisor/conf.d/<appname>.conf
+    ```
+    Add the following content:
+    ```
+    [program:<appname>]
+    command = /webapps/<appname>/env/bin/gunicorn_start
+    user = <appname>
+    stdout_logfile = /webapps/<appname>/logs/gunicorn.log
+    redirect_stderr = true
+    environment = LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8
+    ```
+18. Create logs directory:
+    ```bash
+    mkdir /webapps/<appname>/logs
+    ```
+19. Reload and update Supervisor:
+    ```bash
+    supervisorctl reread
+    supervisorctl update
+    supervisorctl status
+    ```
+
+### 6. Configure Nginx
+20. Create an Nginx configuration file in `/etc/nginx/sites-available`:
+    ```bash
+    vi /etc/nginx/sites-available/<appname>.conf
+    ```
+    Add the following content:
+    ```
+    upstream <appname>_web_server {
+        server unix:/webapps/<appname>/run/gunicorn.sock fail_timeout=0;
+    }
+
+    server {
+        listen 80;
+        server_name <your_server_ip>;
+
+        access_log /webapps/<appname>/logs/access.log;
+        error_log /webapps/<appname>/logs/error.log;
+
+        location = /favicon.ico { access_log off; log_not_found off; }
+
+        location /static/ {
+            alias /webapps/<appname>/<appname>/whole-static/;
+        }
+
+        location /media/ {
+            alias /webapps/<appname>/<appname>/media/;
+        }
+
+        location / {
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header Host $http_host;
+            proxy_redirect off;
+
+            if (!-f $request_filename) {
+                proxy_pass http://<appname>_web_server;
+            }
+        }
+
+        location ~^/ws/ {
+            proxy_pass http://127.0.0.1:8002;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+            proxy_connect_timeout 70s;
+            proxy_send_timeout 70s;
+            proxy_read_timeout 70s;
+        }
+    }
+    ```
+21. Enable the configuration:
+    ```bash
+    cd /etc/nginx/sites-enabled
+    ln -s ../sites-available/<appname>.conf .
+    rm -f default
+    ```
+22. Start and restart Nginx:
+    ```bash
+    service nginx start
+    service nginx restart
+    ```
+23. Ensure correct permissions for the application directory:
+    ```bash
+    chown -R <appname>:webapps /webapps/<appname>
+    ```
+
