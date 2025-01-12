@@ -1,6 +1,6 @@
 "use client";
 
-import { AvatarGroup, Flex, Heading, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
+import { AvatarGroup, Flex, Heading, Icon, RevealFx, SmartImage, SmartLink, Text } from "@/once-ui/components";
 import { useEffect, useState } from "react";
 import { useTranslations } from 'next-intl';
 
@@ -11,6 +11,8 @@ interface ProjectCardProps {
     content: string;
     description: string;
     avatars: { src: string }[];
+    githubLink?: string;
+    serverLink?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -19,7 +21,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     title,
     content,
     description,
-    avatars
+    avatars,
+    githubLink,
+    serverLink
 }) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -63,6 +67,29 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                     delay={0.4}
                     trigger={isTransitioning}
                     speed="fast">
+                    {(githubLink || serverLink) && (
+                        <div style={{
+                            position: "relative",
+                            top: "40px",
+                            right: "20px",
+                            display: "flex",
+                            flexDirection: "row",
+                            gap: "8px",
+                            zIndex: 9999,
+                            justifyContent: "flex-end",
+                        }}>
+                            {githubLink && (
+                                <a href={githubLink} target="_blank" style={{ color: "inherit" }}>
+                                    <Icon name="github" size='m' />
+                                </a>
+                            )}
+                            {serverLink && (
+                                <a href={serverLink} target="_blank" style={{ color: "inherit" }}>
+                                    <Icon name="server" size='m' />
+                                </a>
+                            )}
+                        </div>
+                    )}
                     <SmartImage
                         tabIndex={0}
                         radius="l"

@@ -42,7 +42,8 @@ import {
 } from "react-icons/si";
 
 import {
-	BiLogoPostgresql
+	BiLogoPostgresql,
+	BiServer
 } from "react-icons/bi";
 
 import {
@@ -95,4 +96,5 @@ export const iconLibrary: Record<string, IconType> = {
 	tailwindcss: SiTailwindcss,
 	postman: SiPostman,
 	digitalocean: SiDigitalocean,
+	server: BiServer
 };
