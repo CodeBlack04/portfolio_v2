@@ -18,11 +18,10 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-RUN ls -l /app/
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
 COPY package.json ./
 
 EXPOSE 3000
-CMD ["node", "server.js"]  # Use Node.js to run your production server
+CMD ["npm", "run", "start"]
