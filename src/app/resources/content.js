@@ -60,7 +60,7 @@ const about = {
     },
     calendar: {
         display: true,
-        link: 'https://cal.com'
+        link: 'https://cal.com/tauhidur.rahman.tamim'
     },
     intro: {
         display: true,
