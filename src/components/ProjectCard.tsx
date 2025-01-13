@@ -61,35 +61,35 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <Flex
             fillWidth gap="m"
             direction="column">
+            {(githubLink || serverLink) && (
+                <div style={{
+                    position: "relative",
+                    top: "53px",
+                    right: "20px",
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "8px",
+                    zIndex: 9999,
+                    justifyContent: "flex-end",
+                }}>
+                    {githubLink && (
+                        <a href={githubLink} target="_blank" style={{ color: "inherit" }}>
+                            <Icon name="github" size='m' />
+                        </a>
+                    )}
+                    {serverLink && (
+                        <a href={serverLink} target="_blank" style={{ color: "inherit" }}>
+                            <Icon name="server" size='m' />
+                        </a>
+                    )}
+                </div>
+            )}
             {images[activeIndex] && <Flex onClick={handleImageClick}>
                 <RevealFx
                     style={{width: '100%'}}
                     delay={0.4}
                     trigger={isTransitioning}
                     speed="fast">
-                    {(githubLink || serverLink) && (
-                        <div style={{
-                            position: "relative",
-                            top: "40px",
-                            right: "20px",
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: "8px",
-                            zIndex: 9999,
-                            justifyContent: "flex-end",
-                        }}>
-                            {githubLink && (
-                                <a href={githubLink} target="_blank" style={{ color: "inherit" }}>
-                                    <Icon name="github" size='m' />
-                                </a>
-                            )}
-                            {serverLink && (
-                                <a href={serverLink} target="_blank" style={{ color: "inherit" }}>
-                                    <Icon name="server" size='m' />
-                                </a>
-                            )}
-                        </div>
-                    )}
                     <SmartImage
                         tabIndex={0}
                         radius="l"
