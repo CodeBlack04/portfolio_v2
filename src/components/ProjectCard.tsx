@@ -61,29 +61,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <Flex
             fillWidth gap="m"
             direction="column">
-            {(githubLink || serverLink) && (
-                <div style={{
-                    position: "relative",
-                    top: "53px",
-                    right: "20px",
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: "8px",
-                    zIndex: 9999,
-                    justifyContent: "flex-end",
-                }}>
-                    {githubLink && (
-                        <a href={githubLink} target="_blank" style={{ color: "inherit" }}>
-                            <Icon name="github" size='m' />
-                        </a>
-                    )}
-                    {serverLink && (
-                        <a href={serverLink} target="_blank" style={{ color: "inherit" }}>
-                            <Icon name="server" size='m' />
-                        </a>
-                    )}
-                </div>
-            )}
             {images[activeIndex] && <Flex onClick={handleImageClick}>
                 <RevealFx
                     style={{width: '100%'}}
@@ -150,14 +127,38 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                                 size="m"
                                 reverseOrder/>
                         )}
-                        {description?.trim() && (
-                            <Text
-                                wrap="balance"
-                                variant="body-default-s"
-                                onBackground="neutral-weak">
-                                {description}
-                            </Text>
-                        )}
+                        <Flex>
+                            {description?.trim() && (
+                                <Text
+                                    wrap="balance"
+                                    variant="body-default-s"
+                                    onBackground="neutral-weak">
+                                    {description}
+                                </Text>
+                            )}
+                            {(githubLink || serverLink) && (
+                                <div style={{
+                                    position: "relative",
+                                    
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    gap: "8px",
+                                    zIndex: 9999,
+                                    justifyContent: "flex-end",
+                                }}>
+                                    {githubLink && (
+                                        <a href={githubLink} target="_blank" style={{ color: "inherit" }}>
+                                            <Icon name="github" size='m' />
+                                        </a>
+                                    )}
+                                    {serverLink && (
+                                        <a href={serverLink} target="_blank" style={{ color: "inherit" }}>
+                                            <Icon name="server" size='m' />
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                        </Flex>
                         {content?.trim() && (
                             <SmartLink
                                 suffixIcon="chevronRight"
