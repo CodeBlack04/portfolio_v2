@@ -138,12 +138,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                             )}
                             {(githubLink || serverLink) && (
                                 <div style={{
-                                    position: "relative",
-                                    
+                                    padding: "10px",
                                     display: "flex",
                                     flexDirection: "row",
                                     gap: "8px",
-                                    zIndex: 9999,
                                     justifyContent: "flex-end",
                                 }}>
                                     {githubLink && (

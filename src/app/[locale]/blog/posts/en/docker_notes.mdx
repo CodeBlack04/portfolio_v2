@@ -1,0 +1,136 @@
+---
+title: "Docker Management Notes"
+publishedAt: "2023-11-28"
+summary: "Here are some essential Docker commands to check, start, stop, and manage containers, images, and services"
+tag: "Journal"
+---
+### **1. Checking the Status of Docker Containers**
+- **List all running containers:**
+  ```bash
+  docker ps
+  ```
+
+- **List all containers (including stopped):**
+  ```bash
+  docker ps -a
+  ```
+
+- **Inspect a specific container:**
+  ```bash
+  docker inspect <container_name_or_id>
+  ```
+
+- **View logs of a container:**
+  ```bash
+  docker logs <container_name_or_id>
+  ```
+
+### **2. Starting and Stopping Containers**
+- **Start a stopped container:**
+  ```bash
+  docker start <container_name_or_id>
+  ```
+
+- **Stop a running container:**
+  ```bash
+  docker stop <container_name_or_id>
+  ```
+
+- **Restart a running container:**
+  ```bash
+  docker restart <container_name_or_id>
+  ```
+
+- **Stop all running containers:**
+  ```bash
+  docker stop $(docker ps -q)
+  ```
+
+- **Remove a container (stopped):**
+  ```bash
+  docker rm <container_name_or_id>
+  ```
+
+### **3. Managing Docker Images**
+- **List all Docker images:**
+  ```bash
+  docker images
+  ```
+
+- **Remove an image:**
+  ```bash
+  docker rmi <image_name_or_id>
+  ```
+
+- **Pull an image from Docker Hub:**
+  ```bash
+  docker pull <image_name>
+  ```
+
+- **Build an image from a Dockerfile:**
+  ```bash
+  docker build -t <image_name>:<tag> .
+  ```
+
+### **4. Managing Docker Services (with Docker Compose)**
+- **Start services defined in `docker-compose.yml`:**
+  ```bash
+  docker-compose up
+  ```
+
+- **Start services in detached mode:**
+  ```bash
+  docker-compose up -d
+  ```
+
+- **Stop services:**
+  ```bash
+  docker-compose down
+  ```
+
+- **View logs of all services in a Docker Compose project:**
+  ```bash
+  docker-compose logs
+  ```
+
+- **View logs of a specific service:**
+  ```bash
+  docker-compose logs <service_name>
+  ```
+
+- **Scale a service (e.g., running 3 instances of a service):**
+  ```bash
+  docker-compose up -d --scale <service_name>=3
+  ```
+
+### **5. General Docker Commands**
+- **Check Docker version:**
+  ```bash
+  docker --version
+  ```
+
+- **Check Docker Compose version:**
+  ```bash
+  docker-compose --version
+  ```
+
+- **View system-wide information about Docker:**
+  ```bash
+  docker info
+  ```
+
+### **6. Clean up Docker Resources**
+- **Remove unused Docker containers, networks, and images (dangling):**
+  ```bash
+  docker system prune
+  ```
+
+- **Remove all stopped containers:**
+  ```bash
+  docker container prune
+  ```
+
+- **Remove all unused images:**
+  ```bash
+  docker image prune
+  ```

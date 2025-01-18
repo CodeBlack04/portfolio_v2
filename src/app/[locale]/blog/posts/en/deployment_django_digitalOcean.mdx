@@ -55,20 +55,22 @@ tag: "Journal"
     pip install -r requirements.txt
     pip install python-dotenv gunicorn 'uvicorn[standard]'
     ```
-11. Prepare `settings.py` and update `asgi.py`:
+11. Prepare `settings.py`
+
+12. update `asgi.py`:
     - Add:
       ```python
       import django
       django.setup()
       ```
 
-12. Install `psycopg2-binary` if using PostgreSQL:
+13. Install `psycopg2-binary` if using PostgreSQL:
     ```bash
     pip install psycopg2-binary
     ```
 
 ### 4. Configure Gunicorn
-13. Create a `gunicorn_start` script in `env/bin`:
+14. Create a `gunicorn_start` script in `env/bin`:
     ```bash
     #!/bin/bash
 
@@ -101,21 +103,21 @@ tag: "Journal"
     --log-file=- \
     -k uvicorn.workers.UvicornWorker
     ```
-14. Make the script executable:
+15. Make the script executable:
     ```bash
     chmod +x ./env/bin/gunicorn_start
     ```
-15. Set ownership for the application directory:
+16. Set ownership for the application directory:
     ```bash
     chown -R <appname>:webapps .
     ```
-16. Test Gunicorn:
+17. Test Gunicorn:
     ```bash
     ./env/bin/gunicorn_start
     ```
 
 ### 5. Configure Supervisor
-17. Create a Supervisor configuration file in `/etc/supervisor/conf.d`:
+18. Create a Supervisor configuration file in `/etc/supervisor/conf.d`:
     ```bash
     vi /etc/supervisor/conf.d/<appname>.conf
     ```
@@ -128,11 +130,11 @@ tag: "Journal"
     redirect_stderr = true
     environment = LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8
     ```
-18. Create logs directory:
+19. Create logs directory:
     ```bash
     mkdir /webapps/<appname>/logs
     ```
-19. Reload and update Supervisor:
+20. Reload and update Supervisor:
     ```bash
     supervisorctl reread
     supervisorctl update
@@ -140,7 +142,7 @@ tag: "Journal"
     ```
 
 ### 6. Configure Nginx
-20. Create an Nginx configuration file in `/etc/nginx/sites-available`:
+21. Create an Nginx configuration file in `/etc/nginx/sites-available`:
     ```bash
     vi /etc/nginx/sites-available/<appname>.conf
     ```
@@ -188,18 +190,18 @@ tag: "Journal"
         }
     }
     ```
-21. Enable the configuration:
+22. Enable the configuration:
     ```bash
     cd /etc/nginx/sites-enabled
     ln -s ../sites-available/<appname>.conf .
     rm -f default
     ```
-22. Start and restart Nginx:
+23. Start and restart Nginx:
     ```bash
     service nginx start
     service nginx restart
     ```
-23. Ensure correct permissions for the application directory:
+24. Ensure correct permissions for the application directory:
     ```bash
     chown -R <appname>:webapps /webapps/<appname>
     ```
