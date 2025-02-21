@@ -54,7 +54,8 @@ import {
 	FaDiscord,
 	FaGithub,
 	FaLinkedin,
-	FaXTwitter
+	FaXTwitter,
+	FaMobileScreen
 } from "react-icons/fa6";
 
 export const iconLibrary: Record<string, IconType> = {
@@ -96,5 +97,6 @@ export const iconLibrary: Record<string, IconType> = {
 	tailwindcss: SiTailwindcss,
 	postman: SiPostman,
 	digitalocean: SiDigitalocean,
-	server: BiServer
+	server: BiServer,
+	mobile: FaMobileScreen
 };

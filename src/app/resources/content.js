@@ -4,13 +4,14 @@ const person = {
     firstName: 'Tauhidur',
     lastName:  'Rahman',
     nickName: 'Tamim',
+    phone: '+61 405 515 260',
     get name() {
         return `${this.firstName} ${this.lastName} ${this.nickName}`;
     },
     role:      'Software & Backend Developer',
     avatar:    '/images/avatar.jpg',
     location:  'Australia/Melbourne',        // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-    languages: ['English', 'Bangla']  // optional: Leave the array empty if you don't want to display languages
+    languages: ['English', 'Bangla', 'Hindi']  // optional: Leave the array empty if you don't want to display languages
 }
 
 const newsletter = {

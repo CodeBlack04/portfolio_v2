@@ -122,6 +122,15 @@ export default function About(
                                 name="globe"/>
                             {person.location}
                         </Flex>
+                        <Flex
+                            gap="8"
+                            alignItems="center">
+                            <Icon
+                                onBackground="accent-weak"
+                                size='s'
+                                name="mobile"/>
+                            {person.phone}
+                        </Flex>
                         { person.languages.length > 0 && (
                             <Flex
                                 wrap
