@@ -74,7 +74,7 @@ const about = {
         experiences: [
             {
                 company: 'OPZO Technologies',
-                timeframe: 'Jun 2024 - Dec 2024',
+                timeframe: 'Jun 2024 - Present',
                 role: 'Junior Software Engineer',
                 achievements: [
                     <>Lead the development of an industry-tested accounting module, driving a 60% client boost within six months.</>,
